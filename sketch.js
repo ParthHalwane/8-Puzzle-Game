@@ -182,6 +182,7 @@ function setup() {
     previousNode = pseudo_board
 
     centerCanvas(x_axis, y_axis);
+    checkForWin();
 }
 
 function displayWinMessage() {
@@ -344,11 +345,7 @@ async function draw() {
             }
         }
     }
-    if (frameCounter % 10 === 0) {
             checkForWin();
-        }
-
-        frameCounter++;
 }
 
 
