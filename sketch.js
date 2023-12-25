@@ -184,6 +184,31 @@ function setup() {
     centerCanvas(x_axis, y_axis);
 }
 
+function displayWinMessage() {
+    // You can customize the win message or use an alert
+     var div = createDiv('');
+                div.html(`  <div class="container">
+                <div class="row justify-content-center">
+                  <div class="col text-center">
+                    <p style="opacity:0.7;font-size:24px;">Puzzle is <span style="color:rgb(206, 15, 61);">solved!</span></p>
+                    <button type="button" class="btn btn-success" style="background-color: green;"
+                      onClick="window.location.reload();">Play Again</button>
+                  </div>
+                </div>
+              </div>`);
+                div.position(0, ((windowHeight - y_axis) / 4) + y_axis + 150);
+                div.style('width', '100%');
+
+                // disabling the solve button
+                const startBtn = document.getElementsByClassName("startBtn");
+                startBtn[0].disabled = true
+                startBtn[0].style.color = 'rgb(221, 221, 221)'
+                startBtn[0].style.backgroundColor = 'rgb(150, 119, 119)'
+                startBtn[0].textContent = "Solved!";
+                noLoop();
+                console.log(`We're Done with ${moves - 1} lookups!`)
+}
+
 function checkForWin() {
     if (inGoalState()) {
         displayWinMessage();
