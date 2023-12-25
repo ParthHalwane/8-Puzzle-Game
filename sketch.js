@@ -1,9 +1,7 @@
-// This is testing git
-// All the variables required
 let screen;
 let started = false;
 let startButton;
-let fr = 60; //starting FPS
+let fr = 60; 
 let x_axis
 let y_axis
 
