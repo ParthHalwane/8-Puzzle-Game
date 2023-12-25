@@ -184,6 +184,13 @@ function setup() {
     centerCanvas(x_axis, y_axis);
 }
 
+function checkForWin() {
+    if (inGoalState()) {
+        displayWinMessage();
+    }
+}
+
+let frameCounter = 0;
 
 async function draw() {
     if (started) {
@@ -312,6 +319,11 @@ async function draw() {
             }
         }
     }
+    if (frameCounter % 10 === 0) {
+            checkForWin();
+        }
+
+        frameCounter++;
 }
 
 
