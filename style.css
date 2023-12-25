@@ -1,0 +1,28 @@
+.startBtn {
+    position: relative;
+    overflow: hidden;
+    /* background: linear-gradient(90deg, #f4a742, #f97e4f, #f42c84, #8a2be2); */
+    background: linear-gradient(90deg, #83d6d6, #1ca4a6);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  #sketch01 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height as needed */
+    background-color: #440000; /* Adjust the background color as needed */
+  }
+  
+  #sketch01 canvas {
+    border: 2px solid #333; /* Add a border to the canvas */
+    border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+    background: #3498db; /* Set the background color */
+    color: #3498db; /* Set the text color */
+  }
+  
