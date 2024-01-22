@@ -101,8 +101,8 @@ function setup() {
 
     //some initial states for the board are prepared
     // Choosing a random state of the puzzle from some given ones
-    // chooseRandomState = Math.floor((Math.random() * 4) + 1);
-    chooseRandomState = 2
+    chooseRandomState = Math.floor((Math.random() * 4) + 1);
+    // chooseRandomState = 2
     if (chooseRandomState === 1) {
         pseudo_board = [["", 4, 7], [1, 2, 8], [3, 5, 6]]
         //keeping track of the blank tile
