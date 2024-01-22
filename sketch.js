@@ -1,7 +1,9 @@
+// This is testing git
+// All the variables required
 let screen;
 let started = false;
 let startButton;
-let fr = 60; 
+let fr = 60; //starting FPS
 let x_axis
 let y_axis
 
@@ -75,7 +77,7 @@ function setup() {
     // creating our canvas
     screen = createCanvas(x_axis, y_axis);
     screen.parent("sketch01")
-    background(0, 128, 128);
+    background(17, 75, 95);
     frameRate(fr)
 
     //the "board" is the visual board & the "pseudo_board" is for all the calculation 
@@ -91,7 +93,7 @@ function setup() {
     startButton.style('width', '100%');
     startButton.style('text-align', 'center');
     let startBtn = document.querySelector(".startBtn");
-    startBtn.style.backgroundColor = "#ffffff"
+    startBtn.style.backgroundColor = "#23272b"
     startBtn.style.color = "white"
     startBtn.setAttribute("id", "solveBtn")
     startBtn.addEventListener('mouseup', start)
@@ -99,8 +101,8 @@ function setup() {
 
     //some initial states for the board are prepared
     // Choosing a random state of the puzzle from some given ones
-    chooseRandomState = Math.floor((Math.random() * 4) + 1);
-    // chooseRandomState = 2
+    // chooseRandomState = Math.floor((Math.random() * 4) + 1);
+    chooseRandomState = 2
     if (chooseRandomState === 1) {
         pseudo_board = [["", 4, 7], [1, 2, 8], [3, 5, 6]]
         //keeping track of the blank tile
@@ -182,41 +184,8 @@ function setup() {
     previousNode = pseudo_board
 
     centerCanvas(x_axis, y_axis);
-    checkForWin();
 }
 
-function displayWinMessage() {
-    // You can customize the win message or use an alert
-     var div = createDiv('');
-                div.html(`  <div class="container">
-                <div class="row justify-content-center">
-                  <div class="col text-center">
-                    <p style="opacity:0.7;font-size:24px;">Puzzle is <span style="color:rgb(206, 15, 61);">solved!</span></p>
-                    <button type="button" class="btn btn-success" style="background-color: green;"
-                      onClick="window.location.reload();">Play Again</button>
-                  </div>
-                </div>
-              </div>`);
-                div.position(0, ((windowHeight - y_axis) / 4) + y_axis + 150);
-                div.style('width', '100%');
-
-                // disabling the solve button
-                const startBtn = document.getElementsByClassName("startBtn");
-                startBtn[0].disabled = true
-                startBtn[0].style.color = 'rgb(221, 221, 221)'
-                startBtn[0].style.backgroundColor = 'rgb(150, 119, 119)'
-                startBtn[0].textContent = "Solved!";
-                noLoop();
-                console.log(`We're Done with ${moves - 1} lookups!`)
-}
-
-function checkForWin() {
-    if (inGoalState()) {
-        displayWinMessage();
-    }
-}
-
-let frameCounter = 0;
 
 async function draw() {
     if (started) {
@@ -326,7 +295,7 @@ async function draw() {
                 <div class="row justify-content-center">
                   <div class="col text-center">
                     <p style="opacity:0.7;font-size:24px;">Puzzle is <span style="color:rgb(206, 15, 61);">solved!</span></p>
-                    <button type="button" class="btn btn-success" style="background-color: green;"
+                    <button type="button" class="btn btn-success" style="background-color: #142850;"
                       onClick="window.location.reload();">Play Again</button>
                   </div>
                 </div>
@@ -345,7 +314,6 @@ async function draw() {
             }
         }
     }
-            checkForWin();
 }
 
 
@@ -372,9 +340,21 @@ function start() {
     counterMsg.setAttribute("id", "counter")
 
     // Checking users choice for huristic
-    // const huristic_choice = document.getElementById("inputGroupSelect01");
-    // userHuristicChoice = huristic_choice.value
-    huristic_function = "manhattan"
+    const huristic_choice = document.getElementById("inputGroupSelect01");
+    userHuristicChoice = huristic_choice.value
+    if (userHuristicChoice == 1) {
+        huristic_function = "manhattan"
+    }
+    else if (userHuristicChoice == 2) {
+        huristic_function = "eucledian"
+    }
+    else if (userHuristicChoice == 3) {
+        huristic_function = "misplaced"
+    }
+    else {
+        // giving the default huristic manhattand distance if user doesn't choose
+        huristic_function = "manhattan"
+    }
     started = true;
     loop();
 }
@@ -500,7 +480,15 @@ function inGoalState() {
 }
 
 function huristic(board) {
+    if (huristic_function === 'manhattan') {
         return manhattanDistance(board)
+    }
+    else if (huristic_function === 'misplaced') {
+        return misplacedTiles(board)
+    }
+    else {
+        return eucledianDistance(board)
+    }
 }
 
 // Here we're calculating our huristics which is the manhattan distance
@@ -526,6 +514,41 @@ function manhattanDistance(board) {
         }
     }
     // console.log(cost)
+    return cost
+}
+
+function misplacedTiles(board) {
+    let cost = 0
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            currentTile = board[i][j]
+            goalPosition = goal_board[currentTile]
+            if (currentTile != "") {
+                if (i != goalPosition[0] || j != goalPosition[1]) {
+                    cost += 1
+                }
+            }
+        }
+    }
+    console.log("misplaced---", cost)
+    return cost
+}
+
+function eucledianDistance(board) {
+    let cost = 0
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            currentTile = board[i][j]
+            goalPosition = goal_board[currentTile]
+            if (currentTile != "") {
+                xdiff = Math.pow((i - goalPosition[0]), 2)
+                ydiff = Math.pow((j - goalPosition[1]), 2)
+                cost += Math.sqrt(xdiff + ydiff)
+                console.log(`tile---${currentTile}`, Math.sqrt(xdiff + ydiff))
+            }
+        }
+    }
+    console.log("eucledian---", cost)
     return cost
 }
 
